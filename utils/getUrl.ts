@@ -10,5 +10,9 @@ export const GetFromHandler = async (
     (await response.body?.getReader().read())?.value
   );
 
-  return decoded;
+  try {
+    return JSON.parse(decoded);
+  } catch {
+    return { text: decoded };
+  }
 };

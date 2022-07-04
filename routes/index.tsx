@@ -6,20 +6,19 @@ import { Handlers, PageProps } from '$fresh/server.ts';
 import { GetFromHandler } from 'getUrl';
 import { handler as jokeHandler } from './api/joke.ts';
 
+interface Joke {
+  text: string;
+}
+
 export const handler: Handlers = {
   async GET(req, ctx) {
-    // console.log(req);
-    // const url = req.url + 'api/joke';
-    // console.log(url);
-
     const joke = await GetFromHandler(req, ctx, jokeHandler);
 
-    // console.log(joke);
     return ctx.render(joke);
   },
 };
 
-export default function Home({ data }: PageProps) {
+export default function Home({ data }: PageProps<Joke>) {
   return (
     <div class={tw`p-4 mx-auto max-w-screen-md`}>
       <img
@@ -28,7 +27,7 @@ export default function Home({ data }: PageProps) {
         alt="the fresh logo: a sliced lemon dripping with juice"
       />
 
-      <p>{data}</p>
+      <p>{data.text}</p>
 
       <p class={tw`my-6`}>
         Welcome to `fresh`. Try update this message in the ./routes/index.tsx
