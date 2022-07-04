@@ -3,27 +3,23 @@ import { h } from 'preact';
 import { tw } from '@twind';
 import Counter from '../islands/Counter.tsx';
 import { Handlers, PageProps } from '$fresh/server.ts';
-import { GetUrl } from 'getUrl';
+import { GetFromHandler } from 'getUrl';
+import { handler as jokeHandler } from './api/joke.ts';
 
-type Joke = string;
-
-export const handler: Handlers<Joke | null> = {
-  async GET(req: Request, ctx) {
+export const handler: Handlers = {
+  async GET(req, ctx) {
     // console.log(req);
     // const url = req.url + 'api/joke';
     // console.log(url);
-    const resp = await fetch(GetUrl(req, '/api/joke'));
-    if (resp.status === 404) {
-      return ctx.render(null);
-    }
 
-    const joke: Joke = await resp.text();
+    const joke = await GetFromHandler(req, ctx, jokeHandler);
+
     // console.log(joke);
     return ctx.render(joke);
   },
 };
 
-export default function Home({ data }: PageProps<Joke>) {
+export default function Home({ data }: PageProps) {
   return (
     <div class={tw`p-4 mx-auto max-w-screen-md`}>
       <img

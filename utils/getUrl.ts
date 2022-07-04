@@ -1,9 +1,5 @@
 import { HandlerContext } from '$fresh/server.ts';
 
-export const GetUrl = (req: Request, route: string): string => {
-  return 'http://' + req.headers.get('host') + route;
-};
-
 export const GetFromHandler = async (
   req: Request,
   ctx: HandlerContext,
