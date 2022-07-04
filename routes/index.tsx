@@ -3,21 +3,22 @@ import { h } from 'preact';
 import { tw } from '@twind';
 import Counter from '../islands/Counter.tsx';
 import { Handlers, PageProps } from '$fresh/server.ts';
+import { GetUrl } from 'getUrl';
 
 type Joke = string;
 
 export const handler: Handlers<Joke | null> = {
   async GET(req: Request, ctx) {
-    console.log(req);
-    const url = req.url + 'api/joke';
-    console.log(url);
-    const resp = await fetch(url);
+    // console.log(req);
+    // const url = req.url + 'api/joke';
+    // console.log(url);
+    const resp = await fetch(GetUrl(req, '/api/joke'));
     if (resp.status === 404) {
       return ctx.render(null);
     }
 
     const joke: Joke = await resp.text();
-    console.log(joke);
+    // console.log(joke);
     return ctx.render(joke);
   },
 };
